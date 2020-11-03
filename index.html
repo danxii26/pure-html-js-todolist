@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Todo List Demo</title>
+</head>
+<body>
+    <div>
+        <input id="new-todo" type="text" placeholder="add todo">
+        <button onclick="newTodo()">Add</button>
+    </div>
+    <ul id="list-todo"></ul>
+    <script>
+        let storageKey = 'todoList';
+        let dataString = localStorage.getItem(storageKey);
+        var listTodo;
+
+        if (dataString) {
+            listTodo = JSON.parse(dataString);
+        } else {
+            listTodo = [];
+        }
+
+        function render() {
+            let content = listTodo.map((todo) => {
+                return '<li>' + todo + '</li>';
+            })
+            document.getElementById('list-todo').innerHTML = content.join('');
+        }
+        render();
+
+        let input = document.getElementById('new-todo');
+        input.value = sessionStorage.getItem('input-value');
+        input.addEventListener('change', () => {
+            sessionStorage.setItem('input-value', input.value);
+        })
+
+        function newTodo() {
+            listTodo.push(input.value);
+            render();
+            localStorage.setItem(storageKey, JSON.stringify(listTodo));
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
